@@ -14,7 +14,8 @@ function App() {
     e.preventDefault();
     setInitializing(true);
     try {
-      const res = await fetch('/api/agent/init', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${API_BASE_URL}/api/agent/init`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ persona: { name, domain } })

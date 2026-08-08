@@ -9,10 +9,12 @@ export default function AgentFeed({ agentId }) {
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-        const res = await fetch(`/api/agent/feed?agentId=${agentId}`);
-        if (res.ok) {
-          const data = await res.json();
-          setPosts(data.posts || []);
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+        const response = await fetch(`${API_BASE_URL}/api/agent/feed?agentId=${agentId}`);
+        const data = await response.json();
+        
+        if (data.posts) {
+          setPosts(data.posts);
         }
       } catch (err) {
         console.error("Failed to fetch feed:", err);
