@@ -86,15 +86,26 @@ def startup():
         start_agent_worker(agent['id'])
 
 import contextlib
+import os
+from starlette.staticfiles import StaticFiles
+from starlette.responses import FileResponse
 
 @contextlib.asynccontextmanager
 async def lifespan_handler(app):
     startup()
     yield
 
+async def serve_frontend(request):
+    path = request.path_params.get("path", "")
+    full_path = os.path.join("frontend/dist", path)
+    if os.path.isfile(full_path):
+        return FileResponse(full_path)
+    return FileResponse("frontend/dist/index.html")
+
 routes = [
     Route("/api/agent/init", init_agent, methods=["POST"]),
-    Route("/api/agent/feed", get_feed, methods=["GET"])
+    Route("/api/agent/feed", get_feed, methods=["GET"]),
+    Route("/{path:path}", serve_frontend)
 ]
 
 app = Starlette(debug=True, routes=routes, lifespan=lifespan_handler)
