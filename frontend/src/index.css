@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-2xl;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: #050505;
+  color: #e5e5e5;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
